@@ -39,12 +39,12 @@ task('deploy:secrets', function () {
 // Production Server
 host('production') // Name of the server
     ->setHostname('134.209.199.89')
-    ->setRemoteUser('root') // SSH user
+->setRemoteUser('bri') // SSH user
     ->setDeployPath('/var/www/todolist-app'); // Deploy path
 
 // Staging Server
 host('staging') // Name of the server
-    ->setRemoteUser('root') // SSH user
+    ->setRemoteUser('bri') // SSH user
     ->setHostname('134.209.199.89')
     ->setDeployPath('/var/www/todolist-staging'); // Deploy path
 
