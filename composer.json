@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.4",
-        "deployer/deployer": "^7.0",
+        "deployer/deployer": "^6.7",
         "deployer/recipes": "^6.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
