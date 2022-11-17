@@ -36,15 +36,13 @@ task('deploy:secrets', function () {
 });
 
 // Production Server
-host('todolist-prod') // Name of the server
-    ->setHostname('134.209.199.89') // Hostname or IP address
+host('134.209.199.89') // Name of the server
     ->setTag('production') // Deployment stage (production, staging, etc)
     ->setRemoteUser('root') // SSH user
     ->setDeployPath('/var/www/todolist-app'); // Deploy path
 
 // Staging Server
-host('todolist-staging') // Name of the server
-    ->setHostname('134.209.199.89') // Hostname or IP address
+host('134.209.199.89') // Name of the server
     ->setTag('staging') // Deployment stage (production, staging, etc)
     ->setRemoteUser('root') // SSH user
     ->setDeployPath('/var/www/todolist-staging'); // Deploy path
