@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 // Include the Laravel & rsync recipes
@@ -37,13 +38,11 @@ task('deploy:secrets', function () {
 // Production Server
 host('134.209.199.89') // Name of the server
     ->setRemoteUser('root') // SSH user
-->set('stage', 'production')
     ->setDeployPath('/var/www/todolist-app'); // Deploy path
 
 // Staging Server
 host('134.209.199.89') // Name of the server
     ->setRemoteUser('root') // SSH user
-    ->set('stage', 'staging')
     ->setDeployPath('/var/www/todolist-staging'); // Deploy path
 
 after('deploy:failed', 'deploy:unlock'); // Unlock after failed deploy
