@@ -3,10 +3,10 @@
 namespace Deployer;
 
 // Include the Laravel & rsync recipes
+require 'contrib/rsync.php';
 require 'recipe/laravel.php';
-require 'recipe/rsync.php';
 
-set('application', 'Todo List');
+set('application', 'Todo-List');
 set('ssh_multiplexing', true); // Speeds up deployments
 
 set('rsync_src', function () {
@@ -35,6 +35,10 @@ task('deploy:secrets', function () {
     upload('.env', get('deploy_path') . '/shared');
 });
 
+task('php-fpm:restart', function () {
+    run('service php8.0-fpm restart');
+});
+
 // Production Server
 host('todolist.io') // Name of the server
     ->hostname('134.209.199.89') // Hostname or IP address
@@ -52,24 +56,24 @@ host('staging.todolist.io') // Name of the server
 after('deploy:failed', 'deploy:unlock'); // Unlock after failed deploy
 
 desc('Deploy the application');
-
 task('deploy', [
     'deploy:info',
     'deploy:prepare',
     'deploy:lock',
     'deploy:release',
     'rsync', // Deploy code & built assets
-    'deploy:secrets', // Deploy secrets
+    'deploy:secrets',// Deploy secrets
     'deploy:shared',
     'deploy:vendors',
     'deploy:writable',
+    'php-fpm:restart',
     'artisan:storage:link', // |
     'artisan:view:cache',   // |
-    'artisan:config:cache', // | Laravel Specific steps
-    //'artisan:optimize',     // |
+    'artisan:config:cache', // |
+    'artisan:optimize',     // | Laravel Specific steps
     'artisan:migrate',      // |
-    'artisan:queue:restart', // |
+    'artisan:queue:restart',// |
     'deploy:symlink',
     'deploy:unlock',
-    'cleanup',
+    'deploy:cleanup',
 ]);
