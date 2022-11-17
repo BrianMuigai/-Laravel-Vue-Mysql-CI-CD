@@ -35,22 +35,18 @@ task('deploy:secrets', function () {
     upload('.env', get('deploy_path') . '/shared');
 });
 
-task('php-fpm:restart', function () {
-    run('service php8.0-fpm restart');
-});
-
 // Production Server
 host('todolist.io') // Name of the server
-    ->hostname('134.209.199.89') // Hostname or IP address
-    ->stage('production') // Deployment stage (production, staging, etc)
-    ->user('root') // SSH user
+    ->setHostname('134.209.199.89') // Hostname or IP address
+    ->set('stage', 'production') // Deployment stage (production, staging, etc)
+    ->setRemoteUser('root') // SSH user
     ->set('deploy_path', '/var/www/todolist-app'); // Deploy path
 
 // Staging Server
 host('staging.todolist.io') // Name of the server
-    ->hostname('134.209.199.89') // Hostname or IP address
-    ->stage('staging') // Deployment stage (production, staging, etc)
-    ->user('root') // SSH user
+    ->setHostname('134.209.199.89') // Hostname or IP address
+    ->set('stage', 'staging') // Deployment stage (production, staging, etc)
+    ->setRemoteUser('root') // SSH user
     ->set('deploy_path', '/var/www/todolist-staging'); // Deploy path
 
 after('deploy:failed', 'deploy:unlock'); // Unlock after failed deploy
