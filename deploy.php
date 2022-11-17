@@ -5,6 +5,8 @@ namespace Deployer;
 require 'contrib/rsync.php';
 require 'recipe/laravel.php';
 
+
+set('repository', 'https://github.com/BrianMuigai/-Laravel-Vue-Mysql-CI-CD.git');
 set('application', 'Todo-List');
 set('ssh_multiplexing', true); // Speeds up deployments
 
