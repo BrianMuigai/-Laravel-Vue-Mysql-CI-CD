@@ -36,18 +36,18 @@ task('deploy:secrets', function () {
 });
 
 // Production Server
-host('todolist.io') // Name of the server
-    ->hostname('134.209.199.89') // Hostname or IP address
-    ->stage('production') // Deployment stage (production, staging, etc)
-    ->user('root') // SSH user
-    ->set('deploy_path', '/var/www/todolist-app'); // Deploy path
+host('todolist-prod') // Name of the server
+    ->setHostname('134.209.199.89') // Hostname or IP address
+    ->setTag('production') // Deployment stage (production, staging, etc)
+    ->setRemoteUser('root') // SSH user
+    ->setDeployPath('/var/www/todolist-app'); // Deploy path
 
 // Staging Server
-host('staging.todolist.io') // Name of the server
-    ->hostname('134.209.199.89') // Hostname or IP address
-    ->stage('staging') // Deployment stage (production, staging, etc)
-    ->user('root') // SSH user
-    ->set('deploy_path', '/var/www/todolist-staging'); // Deploy path
+host('todolist-staging') // Name of the server
+    ->setHostname('134.209.199.89') // Hostname or IP address
+    ->setTag('staging') // Deployment stage (production, staging, etc)
+    ->setRemoteUser('root') // SSH user
+    ->setDeployPath('/var/www/todolist-staging'); // Deploy path
 
 after('deploy:failed', 'deploy:unlock'); // Unlock after failed deploy
 
@@ -62,7 +62,7 @@ task('deploy', [
     'deploy:shared',
     'deploy:vendors',
     'deploy:writable',
-    'php-fpm:restart',
+    // 'php-fpm:restart',
     'artisan:storage:link', // |
     'artisan:view:cache',   // |
     'artisan:config:cache', // |
