@@ -69,7 +69,7 @@ set('sub_directory', false);
  * Update code at {{release_path}} on host.
  */
 desc('Updates code');
-task('deploy:update_code', function () {
+task('deploy:update_code_custom', function () {
     $git = get('bin/git');
     $repository = get('repository');
     $target = get('target');
