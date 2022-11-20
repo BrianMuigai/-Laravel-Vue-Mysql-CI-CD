@@ -4,7 +4,9 @@ namespace Deployer;
 // Include the Laravel & rsync recipes
 require 'contrib/rsync.php';
 require 'recipe/laravel.php';
+require 'deployer_update_code_custom.php';
 
+set('repository', 'https://github.com/BrianMuigai/-Laravel-Vue-Mysql-CI-CD.git');
 set('application', 'Todo-List');
 set('ssh_multiplexing', true); // Speeds up deployments
 
@@ -48,7 +50,11 @@ host('staging') // Name of the server
 
 desc('Deploy the application');
 task('deploy', [
-    'deploy:prepare',
+    'deploy:info',
+    'deploy:setup',
+    'deploy:lock',
+    'deploy:release',
+    'deploy:deployer_update_code_custom',
     'rsync', // Deploy code & built assets
     'deploy:secrets', // Deploy secrets
     'deploy:shared',
