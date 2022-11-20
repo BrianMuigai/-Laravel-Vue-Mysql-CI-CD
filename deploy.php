@@ -72,3 +72,5 @@ task('deploy', [
     'deploy:cleanup',
     'deploy:success'
 ]);
+
+after('deploy:failed', 'deploy:unlock'); // Unlock after failed deploy
