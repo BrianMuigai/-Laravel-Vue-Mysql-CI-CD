@@ -48,13 +48,10 @@ host('staging') // Name of the server
     ->setHostname('161.35.32.49')
     ->setDeployPath('/var/www/todolist_staging'); // Deploy path
 
-after('deploy:failed', 'deploy:unlock'); // Unlock after failed deploy
-
 desc('Deploy the application');
 task('deploy', [
     'deploy:info',
     'deploy:prepare',
-    'deploy:release',
     'rsync', // Deploy code & built assets
     'deploy:secrets', // Deploy secrets
     'deploy:shared',
@@ -67,7 +64,6 @@ task('deploy', [
     'artisan:migrate',      // |
     'artisan:queue:restart', // |
     'deploy:symlink',
-    'deploy:unlock',
     'deploy:cleanup',
     'deploy:success'
 ]);
