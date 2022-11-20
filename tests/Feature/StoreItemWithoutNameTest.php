@@ -19,6 +19,6 @@ class StoreItemWithoutName extends TestCase
             'item' => []
         ];
         $response = $this->post('api/item/store', $data);
-        $response->assertStatus(200); //should return 500
+        $response->assertStatus(500); 
     }
 }
