@@ -38,30 +38,25 @@ task('deploy:secrets', function () {
 
 // Production Server
 host('production') // Name of the server
-    ->setHostname('134.209.199.89')
-->setRemoteUser('bri') // SSH user
-    ->setDeployPath('/var/www/todolist-app'); // Deploy path
+    ->setHostname('161.35.32.49')
+    ->setRemoteUser('root') // SSH user
+    ->setDeployPath('/var/www/todolist_app'); // Deploy path
 
 // Staging Server
 host('staging') // Name of the server
-    ->setRemoteUser('bri') // SSH user
-    ->setHostname('134.209.199.89')
-    ->setDeployPath('/var/www/todolist-staging'); // Deploy path
-
-after('deploy:failed', 'deploy:unlock'); // Unlock after failed deploy
+    ->setRemoteUser('root') // SSH user
+    ->setHostname('161.35.32.49')
+    ->setDeployPath('/var/www/todolist_staging'); // Deploy path
 
 desc('Deploy the application');
 task('deploy', [
     'deploy:info',
     'deploy:prepare',
-    'deploy:lock',
-    'deploy:release',
     'rsync', // Deploy code & built assets
     'deploy:secrets', // Deploy secrets
     'deploy:shared',
     'deploy:vendors',
     'deploy:writable',
-    // 'php-fpm:restart',
     'artisan:storage:link', // |
     'artisan:view:cache',   // |
     'artisan:config:cache', // |
@@ -69,6 +64,8 @@ task('deploy', [
     'artisan:migrate',      // |
     'artisan:queue:restart', // |
     'deploy:symlink',
-    'deploy:unlock',
     'deploy:cleanup',
+    'deploy:success'
 ]);
+
+after('deploy:failed', 'deploy:unlock'); // Unlock after failed deploy
