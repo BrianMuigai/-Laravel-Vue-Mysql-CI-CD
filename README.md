@@ -23,7 +23,7 @@
 - navigate under .github/workflows to see existing workflow that fires on Pull request and push 
 - store .env files under settings/secrets
 - store ssh_private key under settings/secrets to automate deployment
-- Get server list of known devices `ssh-keyscan rsa -t {server_ip_address}` and store the value starting with  **ssh-rsa** in settings/secrets
+- Get server list of known devices `ssh-keyscan rsa -t {server_ip_address}` and store the value containing  **{ip address} ssh-rsa** in settings/secrets
 
 ## Setup Deployer
 - Using deployer `composer require deployer/deployer deployer/recipes` locally in the project 
