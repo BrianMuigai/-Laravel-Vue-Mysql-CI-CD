@@ -2,7 +2,7 @@
 namespace Deployer;
 
 // Include the Laravel & rsync recipes
-require 'recipe/rsync.php';
+require 'contrib/rsync.php';
 require 'recipe/laravel.php';
 
 
@@ -61,7 +61,6 @@ task('deploy', [
     'deploy:shared',
     'deploy:vendors',
     'deploy:writable',
-    // 'php-fpm:restart',
     'artisan:storage:link', // |
     'artisan:view:cache',   // |
     'artisan:config:cache', // |
