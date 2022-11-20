@@ -40,13 +40,13 @@ task('deploy:secrets', function () {
 host('production') // Name of the server
     ->setHostname('161.35.32.49')
     ->setRemoteUser('root') // SSH user
-    ->setDeployPath('/var/www/todolist-app'); // Deploy path
+    ->setDeployPath('/var/www/todolist_app'); // Deploy path
 
 // Staging Server
 host('staging') // Name of the server
     ->setRemoteUser('root') // SSH user
     ->setHostname('161.35.32.49')
-    ->setDeployPath('/var/www/todolist-staging'); // Deploy path
+    ->setDeployPath('/var/www/todolist_staging'); // Deploy path
 
 after('deploy:failed', 'deploy:unlock'); // Unlock after failed deploy
 
