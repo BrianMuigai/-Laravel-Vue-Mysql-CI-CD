@@ -3,6 +3,7 @@
 namespace Deployer;
 
 use Deployer\Exception\ConfigurationException;
+use Exception;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -92,9 +93,17 @@ task('deploy:update_code_custom', function () {
 
     cd($bare);
 
-    cd('{{deploy_path}}');
-    run("rm -rf $bare");
-    goto start;
+    // If remote url changed, drop `.dep/repo` and reinstall.
+    $isValid = false;
+    try {
+        $isValid = run("$git config --get remote.origin.url") !== $repository;
+    } catch (Exception $e) {
+    }
+    if (!$isValid) {
+        cd('{{deploy_path}}');
+        run("rm -rf $bare");
+        goto start;
+    }
 
     run("$git remote update 2>&1", ['env' => $env]);
 
