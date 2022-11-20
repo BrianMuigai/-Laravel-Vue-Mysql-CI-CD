@@ -71,6 +71,7 @@ set('sub_directory', false);
  */
 desc('Updates code');
 task('deploy:update_code_custom', function () {
+    $check = true;
     $git = get('bin/git');
     $repository = get('repository');
     $target = get('target');
@@ -95,14 +96,17 @@ task('deploy:update_code_custom', function () {
 
     // If remote url changed, drop `.dep/repo` and reinstall.
     $isValid = false;
-    try {
-        $isValid = run("$git config --get remote.origin.url") !== $repository;
-    } catch (Exception $e) {
-    }
-    if (!$isValid) {
-        cd('{{deploy_path}}');
-        run("rm -rf $bare");
-        goto start;
+    if ($check) {
+        try {
+            $isValid = run("$git config --get remote.origin.url") !== $repository;
+        } catch (Exception $e) {
+        }
+        if (!$isValid) {
+            cd('{{deploy_path}}');
+            run("rm -rf $bare");
+            $check = false;
+            goto start;
+        }
     }
 
     run("$git remote update 2>&1", ['env' => $env]);
