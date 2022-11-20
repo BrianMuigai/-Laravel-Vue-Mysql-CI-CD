@@ -50,6 +50,7 @@ host('staging') // Name of the server
 
 desc('Deploy the application');
 task('deploy', [
+    'deploy:unlock',
     'deploy:info',
     'deploy:prepare',
     'rsync', // Deploy code & built assets
