@@ -2,7 +2,7 @@
 namespace Deployer;
 
 // Include the Laravel & rsync recipes
-require 'contrib/rsync.php';
+require 'recipe/rsync.php';
 require 'recipe/laravel.php';
 
 
@@ -68,7 +68,14 @@ task('deploy', [
     'artisan:optimize',     // | Laravel Specific steps
     'artisan:migrate',      // |
     'artisan:queue:restart', // |
+    'npm:install',
     'deploy:symlink',
     'deploy:unlock',
     'deploy:cleanup',
+    'deploy:success'
 ]);
+
+task('npm:run:prod', function () {
+    cd('{{release_or_current_path}}');
+    run('npm run prod');
+});
