@@ -92,12 +92,9 @@ task('deploy:update_code_custom', function () {
 
     cd($bare);
 
-    // // If remote url changed, drop `.dep/repo` and reinstall.
-    // if (run("$git config --get remote.origin.url") !== $repository) {
-    //     cd('{{deploy_path}}');
-    //     run("rm -rf $bare");
-    //     goto start;
-    // }
+    cd('{{deploy_path}}');
+    run("rm -rf $bare");
+    goto start;
 
     run("$git remote update 2>&1", ['env' => $env]);
 
