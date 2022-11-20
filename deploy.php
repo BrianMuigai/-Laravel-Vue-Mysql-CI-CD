@@ -48,8 +48,6 @@ host('staging') // Name of the server
 
 desc('Deploy the application');
 task('deploy', [
-    'deploy:unlock',
-    'deploy:info',
     'deploy:prepare',
     'rsync', // Deploy code & built assets
     'deploy:secrets', // Deploy secrets
@@ -62,9 +60,7 @@ task('deploy', [
     'artisan:optimize',     // | Laravel Specific steps
     'artisan:migrate',      // |
     'artisan:queue:restart', // |
-    'deploy:symlink',
-    'deploy:cleanup',
-    'deploy:success'
+    'deploy:publish',
 ]);
 
 after('deploy:failed', 'deploy:unlock'); // Unlock after failed deploy
