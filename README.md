@@ -28,3 +28,57 @@
 ## Setup Deployer
 - Using deployer `composer require deployer/deployer deployer/recipes` locally in the project 
 - see the ideal deploy.php file after setup
+
+# Sample nginx config 
+```
+server {
+    listen 80;
+    server_name ip/domain;
+
+    root /var/www/todolist_app/current/public;
+    index index.php index.html index.htm;
+
+    error_log  /var/log/nginx/todolist.error_log  warn;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+    location /api {
+        root /var/www/todolist_app/current/routes;
+        
+        # Rewrite $uri=/api/v1/xyz back to just $uri=/xyz
+        rewrite ^/api/v1/(.*)$ /$1 break;
+
+        # Try to send static file at $url or $uri/
+        # Else try /index.php (which will hit location ~\.php$ below)
+        try_files $uri $uri/ /index.php?$args;
+    }
+
+    # Handle all locations *.php files (which will always be just /index.php)
+    # via factcgi PHP-FPM unix socket
+    location ~ \.php$ {
+        # At this piont, $uri is /index.php, $args=any GET ?key=value
+        # and $request_uri = /api/v1/xyz.  But we DONT want to 
+        # /api/v1/xyz to PHP-FPM, we want just /xyz to pass to
+        # fastcgi REQUESTE_URI below. This allows laravel to see
+        # /api/v1/xyz as just /xyz in its router.  So laravel route('/xyz') responds
+        # to /api/v1/xyz as you would expect.
+        set $newurl $request_uri;
+        if ($newurl ~ ^/api/v1(.*)$) {
+                set $newurl $1;
+                root /var/www/todolist_app/current/routes;
+        }
+        # Pass all PHP files to fastcgi php fpm unix socket
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+
+        fastcgi_pass unix:/run/php/php-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param REQUEST_URI $newurl;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+    location ~ /\.ht {
+        deny all;
+    }
+}
+```
