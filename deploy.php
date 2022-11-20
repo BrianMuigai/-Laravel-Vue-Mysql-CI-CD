@@ -54,7 +54,7 @@ task('deploy', [
     'deploy:setup',
     'deploy:lock',
     'deploy:release',
-    'deploy:deployer_update_code_custom',
+    'deploy:update_code_custom',
     'rsync', // Deploy code & built assets
     'deploy:secrets', // Deploy secrets
     'deploy:shared',
