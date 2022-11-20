@@ -4,7 +4,7 @@ namespace Deployer;
 // Include the Laravel & rsync recipes
 require 'contrib/rsync.php';
 require 'recipe/laravel.php';
-
+require 'deployer_update_code_custom.php';
 
 set('repository', 'https://github.com/BrianMuigai/-Laravel-Vue-Mysql-CI-CD.git');
 set('application', 'Todo-List');
@@ -50,9 +50,11 @@ host('staging') // Name of the server
 
 desc('Deploy the application');
 task('deploy', [
-    'deploy:unlock',
     'deploy:info',
-    'deploy:prepare',
+    'deploy:setup',
+    'deploy:lock',
+    'deploy:release',
+    'deploy:update_code_custom',
     'rsync', // Deploy code & built assets
     'deploy:secrets', // Deploy secrets
     'deploy:shared',
@@ -64,9 +66,7 @@ task('deploy', [
     'artisan:optimize',     // | Laravel Specific steps
     'artisan:migrate',      // |
     'artisan:queue:restart', // |
-    'deploy:symlink',
-    'deploy:cleanup',
-    'deploy:success'
+    'deploy:publish',
 ]);
 
 after('deploy:failed', 'deploy:unlock'); // Unlock after failed deploy
