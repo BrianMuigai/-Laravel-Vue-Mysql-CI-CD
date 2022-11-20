@@ -54,7 +54,6 @@ desc('Deploy the application');
 task('deploy', [
     'deploy:info',
     'deploy:prepare',
-    'deploy:lock',
     'deploy:release',
     'rsync', // Deploy code & built assets
     'deploy:secrets', // Deploy secrets
